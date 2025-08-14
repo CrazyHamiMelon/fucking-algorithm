@@ -320,34 +320,44 @@ class GreetingCardEditor {
      * @param {fabric.Image} img - 图片对象
      */
     updateControlPosition(controls, img) {
+        // 获取画布在页面中的位置信息
         const canvasRect = this.canvas.getElement().getBoundingClientRect();
+        // 获取画布的缩放比例
         const zoom = this.canvas.getZoom();
         
         // 获取图片的旋转角度（弧度）
         const angleRad = (img.angle || 0) * Math.PI / 180;
         
         // 计算图片在屏幕上的实际位置和尺寸
+        // imgLeft: 图片在屏幕上的左边界位置（像素）
         const imgLeft = img.left * zoom + canvasRect.left;
+        // imgTop: 图片在屏幕上的上边界位置（像素）
         const imgTop = img.top * zoom + canvasRect.top;
+        // imgWidth: 图片在屏幕上的实际宽度（像素）
         const imgWidth = img.width * img.scaleX * zoom;
+        // imgHeight: 图片在屏幕上的实际高度（像素）
         const imgHeight = img.height * img.scaleY * zoom;
         
         // 设置控制按钮容器的位置和尺寸
+        // 让容器覆盖整个图片区域，这样按钮可以在容器内定位
         controls.style.left = `${imgLeft}px`;
         controls.style.top = `${imgTop}px`;
         controls.style.width = `${imgWidth}px`;
         controls.style.height = `${imgHeight}px`;
         
         // 计算图片四个角在旋转后的实际位置
+        // centerX: 图片中心相对于容器的X坐标（像素）
         const centerX = imgWidth / 2;
+        // centerY: 图片中心相对于容器的Y坐标（像素）
         const centerY = imgHeight / 2;
         
-        // 计算四个角的相对坐标（未旋转时）
+        // 计算四个角相对于图片中心的坐标（未旋转时）
+        // 这些坐标是相对于图片中心的，不是相对于画布的
         const corners = [
-            { x: 0, y: 0 },                    // 左上角
-            { x: imgWidth, y: 0 },             // 右上角
-            { x: imgWidth, y: imgHeight },     // 右下角
-            { x: 0, y: imgHeight }             // 左下角
+            { x: -centerX, y: -centerY },           // 左上角：相对于中心向左上偏移
+            { x: centerX, y: -centerY },            // 右上角：相对于中心向右上偏移
+            { x: centerX, y: centerY },             // 右下角：相对于中心向右下偏移
+            { x: -centerX, y: centerY }             // 左下角：相对于中心向左下偏移
         ];
         
         // 为每个按钮设置正确的位置
@@ -355,6 +365,7 @@ class GreetingCardEditor {
         buttons.forEach((btn, index) => {
             let cornerIndex;
             
+            // 根据按钮索引确定对应的角
             switch(index) {
                 case 0: // 旋转按钮 - 左上角
                     cornerIndex = 0;
@@ -367,22 +378,23 @@ class GreetingCardEditor {
                     break;
             }
             
-            // 获取对应角的坐标
+            // 获取对应角的相对坐标
             const corner = corners[cornerIndex];
             
-            // 将角坐标转换为相对于图片中心的坐标
-            const relX = corner.x - centerX;
-            const relY = corner.y - centerY;
-            
             // 应用旋转变换，计算旋转后的角坐标
+            // 使用标准的2D旋转变换公式：
+            // x' = x*cos(θ) - y*sin(θ)
+            // y' = x*sin(θ) + y*cos(θ)
             const cos = Math.cos(angleRad);
             const sin = Math.sin(angleRad);
-            const rotatedX = relX * cos - relY * sin;
-            const rotatedY = relX * sin + relY * cos;
+            const rotatedX = corner.x * cos - corner.y * sin;
+            const rotatedY = corner.x * sin + corner.y * cos;
             
-            // 将按钮直接放到旋转后的角坐标上
-            btn.style.left = `${rotatedX + centerX - 15}px`;  // -15是为了让按钮居中在角上
-            btn.style.top = `${rotatedY + centerY - 15}px`;   // -15是为了让按钮居中在角上
+            // 将按钮放到旋转后的角坐标上
+            // 加上centerX和centerY是为了将坐标从相对于中心转换为相对于容器左上角
+            // 减去15px是为了让按钮居中在角上（按钮尺寸是30x30）
+            btn.style.left = `${rotatedX + centerX - 15}px`;
+            btn.style.top = `${rotatedY + centerY - 15}px`;
             
             // 移除transform，因为我们已经手动计算了位置
             btn.style.transform = 'none';
