@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贺卡订制</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>贺卡订制</h1>
+        </header>
+        
+        <div class="main-content">
+            <div class="controls">
+                <button id="startCustomize" class="btn btn-primary">开始定制</button>
+                <div id="uploadControls" class="upload-controls" style="display: none;">
+                    <button id="uploadImage" class="btn btn-secondary">上传图片</button>
+                    <button id="addText" class="btn btn-secondary">编辑文字</button>
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                    <input type="file" id="backgroundInput" accept="image/*" style="display: none;">
+                </div>
+            </div>
+            
+            <div class="canvas-container">
+                <canvas id="greetingCard" width="800" height="600"></canvas>
+            </div>
+            
+            <div class="text-editor" id="textEditor" style="display: none;">
+                <div class="editor-header">
+                    <h3>文字编辑</h3>
+                    <button id="closeEditor" class="btn-close">&times;</button>
+                </div>
+                <div class="editor-content">
+                    <div class="font-controls">
+                        <select id="fontFamily">
+                            <option value="Arial">Arial</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Georgia">Georgia</option>
+                            <option value="Verdana">Verdana</option>
+                            <option value="微软雅黑">微软雅黑</option>
+                            <option value="宋体">宋体</option>
+                        </select>
+                        <input type="number" id="fontSize" value="24" min="8" max="72">
+                        <input type="color" id="fontColor" value="#000000">
+                        <button id="bold" class="format-btn">B</button>
+                        <button id="italic" class="format-btn">I</button>
+                        <button id="underline" class="format-btn">U</button>
+                    </div>
+                    <div class="text-area">
+                        <div id="richTextArea" contenteditable="true"></div>
+                    </div>
+                    <div class="editor-actions">
+                        <button id="applyText" class="btn btn-primary">应用</button>
+                        <button id="cancelText" class="btn btn-secondary">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

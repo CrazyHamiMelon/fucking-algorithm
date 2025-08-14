@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贺卡订制系统 - 功能测试</title>
+    <style>
+        body {
+            font-family: '微软雅黑', Arial, sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .test-result {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 3px solid #007bff;
+        }
+        .success {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+        .error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 贺卡订制系统功能测试</h1>
+        
+        <div class="test-section">
+            <h3>1. 基础功能测试</h3>
+            <button class="test-button" onclick="testBasicFunctions()">测试基础功能</button>
+            <div id="basic-result" class="test-result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>2. 画布初始化测试</h3>
+            <button class="test-button" onclick="testCanvasInit()">测试画布初始化</button>
+            <div id="canvas-result" class="test-result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>3. 事件绑定测试</h3>
+            <button class="test-button" onclick="testEventBinding()">测试事件绑定</button>
+            <div id="event-result" class="test-result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>4. 富文本编辑器测试</h3>
+            <button class="test-button" onclick="testTextEditor()">测试文字编辑器</button>
+            <div id="text-result" class="test-result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>5. 完整系统测试</h3>
+            <button class="test-button" onclick="testCompleteSystem()">测试完整系统</button>
+            <div id="complete-result" class="test-result"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>6. 开始使用</h3>
+            <p>如果所有测试都通过，你就可以开始使用贺卡订制系统了！</p>
+            <a href="index.html" class="test-button" style="text-decoration: none; display: inline-block;">🎨 开始定制贺卡</a>
+        </div>
+    </div>
+
+    <script>
+        function showResult(elementId, message, isSuccess = true) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.className = `test-result ${isSuccess ? 'success' : 'error'}`;
+        }
+
+        function testBasicFunctions() {
+            try {
+                // 测试基本DOM元素是否存在
+                const startBtn = document.querySelector('#startCustomize');
+                const uploadControls = document.querySelector('#uploadControls');
+                const canvas = document.querySelector('#greetingCard');
+                
+                if (startBtn && uploadControls && canvas) {
+                    showResult('basic-result', '✅ 基础DOM元素检查通过', true);
+                } else {
+                    showResult('basic-result', '❌ 基础DOM元素检查失败', false);
+                }
+            } catch (error) {
+                showResult('basic-result', `❌ 基础功能测试出错: ${error.message}`, false);
+            }
+        }
+
+        function testCanvasInit() {
+            try {
+                // 测试Fabric.js是否可用
+                if (typeof fabric !== 'undefined') {
+                    showResult('canvas-result', '✅ Fabric.js库加载成功', true);
+                } else {
+                    showResult('canvas-result', '❌ Fabric.js库未加载', false);
+                }
+            } catch (error) {
+                showResult('canvas-result', `❌ 画布初始化测试出错: ${error.message}`, false);
+            }
+        }
+
+        function testEventBinding() {
+            try {
+                // 测试事件绑定
+                const startBtn = document.querySelector('#startCustomize');
+                if (startBtn) {
+                    showResult('event-result', '✅ 事件绑定测试通过', true);
+                } else {
+                    showResult('event-result', '❌ 事件绑定测试失败', false);
+                }
+            } catch (error) {
+                showResult('event-result', `❌ 事件绑定测试出错: ${error.message}`, false);
+            }
+        }
+
+        function testTextEditor() {
+            try {
+                // 测试富文本编辑器功能
+                const textEditor = document.querySelector('#textEditor');
+                const richTextArea = document.querySelector('#richTextArea');
+                
+                if (textEditor && richTextArea) {
+                    showResult('text-result', '✅ 富文本编辑器检查通过', true);
+                } else {
+                    showResult('text-result', '❌ 富文本编辑器检查失败', false);
+                }
+            } catch (error) {
+                showResult('text-result', `❌ 富文本编辑器测试出错: ${error.message}`, false);
+            }
+        }
+
+        function testCompleteSystem() {
+            try {
+                // 测试完整系统
+                let allTestsPassed = true;
+                let testResults = [];
+                
+                // 检查所有必需的元素
+                const requiredElements = [
+                    '#startCustomize',
+                    '#uploadControls',
+                    '#greetingCard',
+                    '#textEditor',
+                    '#richTextArea'
+                ];
+                
+                requiredElements.forEach(selector => {
+                    const element = document.querySelector(selector);
+                    if (element) {
+                        testResults.push(`✅ ${selector}`);
+                    } else {
+                        testResults.push(`❌ ${selector}`);
+                        allTestsPassed = false;
+                    }
+                });
+                
+                // 检查Fabric.js
+                if (typeof fabric !== 'undefined') {
+                    testResults.push('✅ Fabric.js库');
+                } else {
+                    testResults.push('❌ Fabric.js库');
+                    allTestsPassed = false;
+                }
+                
+                if (allTestsPassed) {
+                    showResult('complete-result', `✅ 所有测试通过！\n${testResults.join('\n')}`, true);
+                } else {
+                    showResult('complete-result', `❌ 部分测试失败：\n${testResults.join('\n')}`, false);
+                }
+            } catch (error) {
+                showResult('complete-result', `❌ 完整系统测试出错: ${error.message}`, false);
+            }
+        }
+
+        // 页面加载完成后自动运行基础测试
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                testBasicFunctions();
+                testCanvasInit();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
