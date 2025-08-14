@@ -323,6 +323,9 @@ class GreetingCardEditor {
         const canvasRect = this.canvas.getElement().getBoundingClientRect();
         const zoom = this.canvas.getZoom();
         
+        // 获取图片的旋转角度（弧度）
+        const angleRad = (img.angle || 0) * Math.PI / 180;
+        
         // 计算图片在屏幕上的实际位置和尺寸
         const imgLeft = img.left * zoom + canvasRect.left;
         const imgTop = img.top * zoom + canvasRect.top;
@@ -334,9 +337,6 @@ class GreetingCardEditor {
         controls.style.top = `${imgTop}px`;
         controls.style.width = `${imgWidth}px`;
         controls.style.height = `${imgHeight}px`;
-        
-        // 获取图片的旋转角度
-        const angle = img.angle || 0;
         
         // 为每个按钮设置正确的位置，考虑旋转角度
         const buttons = controls.querySelectorAll('.control-btn');
@@ -358,10 +358,26 @@ class GreetingCardEditor {
                     break;
             }
             
-            // 应用旋转变换，让按钮跟随图片旋转
-            btn.style.transform = `rotate(${angle}deg)`;
-            btn.style.left = `${btnLeft}px`;
-            btn.style.top = `${btnTop}px`;
+            // 计算按钮在旋转后的实际位置
+            const cos = Math.cos(angleRad);
+            const sin = Math.sin(angleRad);
+            
+            // 将按钮位置转换为相对于图片中心的坐标
+            const centerX = imgWidth / 2;
+            const centerY = imgHeight / 2;
+            const btnRelX = btnLeft - centerX;
+            const btnRelY = btnTop - centerY;
+            
+            // 应用旋转变换
+            const rotatedX = btnRelX * cos - btnRelY * sin;
+            const rotatedY = btnRelX * sin + btnRelY * cos;
+            
+            // 设置按钮的最终位置
+            btn.style.left = `${rotatedX + centerX}px`;
+            btn.style.top = `${rotatedY + centerY}px`;
+            
+            // 移除之前的transform，因为我们已经手动计算了旋转后的位置
+            btn.style.transform = 'none';
         });
     }
     
