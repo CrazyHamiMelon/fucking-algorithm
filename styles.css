@@ -253,22 +253,14 @@ header h1 {
 
 .control-btn.rotate {
     background: #28a745;
-    top: -15px;
-    left: -15px;
 }
 
 .control-btn.scale {
     background: #ffc107;
-    top: -15px;
-    right: -15px;
 }
-
-/* 移除移动按钮样式，因为现在使用拖拽移动 */
 
 .control-btn.delete {
     background: #dc3545;
-    bottom: -15px;
-    right: -15px;
 }
 
 /* 响应式设计 */

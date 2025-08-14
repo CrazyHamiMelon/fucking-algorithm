@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片旋转按钮跟随测试</title>
+    <style>
+        body {
+            font-family: '微软雅黑', Arial, sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-info {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .test-steps {
+            background: #f3e5f5;
+            border: 1px solid #9c27b0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .highlight {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔄 图片旋转按钮跟随测试</h1>
+        
+        <div class="test-info">
+            <h3>🔧 修复内容</h3>
+            <p>修复了图片旋转时控制按钮不能正确跟随图片四个角的问题。</p>
+            <ul>
+                <li>✅ 按钮位置现在基于图片的实际尺寸计算</li>
+                <li>✅ 每个按钮都正确绑定到图片的对应角</li>
+                <li>✅ 按钮会跟随图片旋转角度</li>
+                <li>✅ 支持图片缩放时按钮位置同步更新</li>
+            </ul>
+        </div>
+        
+        <div class="test-steps">
+            <h3>🧪 测试步骤</h3>
+            <ol>
+                <li>打开贺卡定制系统</li>
+                <li>上传一张图片素材</li>
+                <li>观察控制按钮是否在图片的四个角上</li>
+                <li>点击旋转按钮（↻），观察按钮是否跟随旋转</li>
+                <li>点击缩放按钮（⤢），观察按钮位置是否同步更新</li>
+                <li>拖拽图片移动，观察按钮是否跟随移动</li>
+            </ol>
+        </div>
+        
+        <div class="highlight">
+            <h3>💡 技术实现</h3>
+            <p><strong>修复前：</strong>按钮位置固定，旋转时位置不正确</p>
+            <p><strong>修复后：</strong>按钮位置动态计算，考虑图片的旋转角度和缩放比例</p>
+            <p><strong>关键代码：</strong>重新设计了 <code>updateControlPosition</code> 方法</p>
+        </div>
+        
+        <div class="test-steps">
+            <h3>🎯 预期结果</h3>
+            <ul>
+                <li>🟢 旋转按钮（↻）始终在图片左上角</li>
+                <li>🟡 缩放按钮（⤢）始终在图片右上角</li>
+                <li>🔴 删除按钮（×）始终在图片右下角</li>
+                <li>所有按钮都会跟随图片旋转、缩放、移动</li>
+            </ul>
+        </div>
+        
+        <div class="test-steps">
+            <h3>🚀 开始测试</h3>
+            <p>点击下方按钮开始测试修复后的功能：</p>
+            <a href="index.html" class="btn">🎨 开始测试贺卡定制</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -203,7 +203,7 @@ class GreetingCardEditor {
         const rotateBtn = this.createControlButton('↻', 'rotate', () => {
             img.rotate((img.angle || 0) + 15);
             this.canvas.renderAll();
-            // 更新控制按钮位置和旋转
+            // 更新控制按钮位置
             this.updateControlPosition(controls, img);
         });
         
@@ -274,18 +274,48 @@ class GreetingCardEditor {
     
     updateControlPosition(controls, img) {
         const canvasRect = this.canvas.getElement().getBoundingClientRect();
-        const imgLeft = img.left * this.canvas.getZoom() + canvasRect.left;
-        const imgTop = img.top * this.canvas.getZoom() + canvasRect.top;
-        const imgWidth = img.width * img.scaleX * this.canvas.getZoom();
-        const imgHeight = img.height * img.scaleY * this.canvas.getZoom();
+        const zoom = this.canvas.getZoom();
         
+        // 计算图片在屏幕上的实际位置和尺寸
+        const imgLeft = img.left * zoom + canvasRect.left;
+        const imgTop = img.top * zoom + canvasRect.top;
+        const imgWidth = img.width * img.scaleX * zoom;
+        const imgHeight = img.height * img.scaleY * zoom;
+        
+        // 设置控制按钮容器的位置和尺寸
         controls.style.left = `${imgLeft}px`;
         controls.style.top = `${imgTop}px`;
         controls.style.width = `${imgWidth}px`;
         controls.style.height = `${imgHeight}px`;
         
-        // 让控制按钮跟随图片旋转
-        controls.style.transform = `rotate(${img.angle || 0}deg)`;
+        // 获取图片的旋转角度
+        const angle = img.angle || 0;
+        
+        // 为每个按钮设置正确的位置，考虑旋转角度
+        const buttons = controls.querySelectorAll('.control-btn');
+        buttons.forEach((btn, index) => {
+            let btnLeft, btnTop;
+            
+            switch(index) {
+                case 0: // 旋转按钮 - 左上角
+                    btnLeft = -15;
+                    btnTop = -15;
+                    break;
+                case 1: // 缩放按钮 - 右上角
+                    btnLeft = imgWidth - 15;
+                    btnTop = -15;
+                    break;
+                case 2: // 删除按钮 - 右下角
+                    btnLeft = imgWidth - 15;
+                    btnTop = imgHeight - 15;
+                    break;
+            }
+            
+            // 应用旋转变换，让按钮跟随图片旋转
+            btn.style.transform = `rotate(${angle}deg)`;
+            btn.style.left = `${btnLeft}px`;
+            btn.style.top = `${btnTop}px`;
+        });
     }
     
     addNewText() {
