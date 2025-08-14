@@ -315,7 +315,7 @@ class GreetingCardEditor {
     
     /**
      * 更新控制按钮位置
-     * 修复后的方法：按钮真正绑定到图片的四个角
+     * 按照用户思路：直接计算图片四个角的位置，按钮直接放到角上
      * @param {HTMLElement} controls - 控制按钮容器
      * @param {fabric.Image} img - 图片对象
      */
@@ -338,45 +338,53 @@ class GreetingCardEditor {
         controls.style.width = `${imgWidth}px`;
         controls.style.height = `${imgHeight}px`;
         
-        // 为每个按钮设置正确的位置，考虑旋转角度
+        // 计算图片四个角在旋转后的实际位置
+        const centerX = imgWidth / 2;
+        const centerY = imgHeight / 2;
+        
+        // 计算四个角的相对坐标（未旋转时）
+        const corners = [
+            { x: 0, y: 0 },                    // 左上角
+            { x: imgWidth, y: 0 },             // 右上角
+            { x: imgWidth, y: imgHeight },     // 右下角
+            { x: 0, y: imgHeight }             // 左下角
+        ];
+        
+        // 为每个按钮设置正确的位置
         const buttons = controls.querySelectorAll('.control-btn');
         buttons.forEach((btn, index) => {
-            let btnLeft, btnTop;
+            let cornerIndex;
             
             switch(index) {
                 case 0: // 旋转按钮 - 左上角
-                    btnLeft = -15;
-                    btnTop = -15;
+                    cornerIndex = 0;
                     break;
                 case 1: // 缩放按钮 - 右上角
-                    btnLeft = imgWidth - 15;
-                    btnTop = -15;
+                    cornerIndex = 1;
                     break;
                 case 2: // 删除按钮 - 右下角
-                    btnLeft = imgWidth - 15;
-                    btnTop = imgHeight - 15;
+                    cornerIndex = 2;
                     break;
             }
             
-            // 计算按钮在旋转后的实际位置
+            // 获取对应角的坐标
+            const corner = corners[cornerIndex];
+            
+            // 将角坐标转换为相对于图片中心的坐标
+            const relX = corner.x - centerX;
+            const relY = corner.y - centerY;
+            
+            // 应用旋转变换，计算旋转后的角坐标
             const cos = Math.cos(angleRad);
             const sin = Math.sin(angleRad);
+            const rotatedX = relX * cos - relY * sin;
+            const rotatedY = relX * sin + relY * cos;
             
-            // 将按钮位置转换为相对于图片中心的坐标
-            const centerX = imgWidth / 2;
-            const centerY = imgHeight / 2;
-            const btnRelX = btnLeft - centerX;
-            const btnRelY = btnTop - centerY;
+            // 将按钮直接放到旋转后的角坐标上
+            btn.style.left = `${rotatedX + centerX - 15}px`;  // -15是为了让按钮居中在角上
+            btn.style.top = `${rotatedY + centerY - 15}px`;   // -15是为了让按钮居中在角上
             
-            // 应用旋转变换
-            const rotatedX = btnRelX * cos - btnRelY * sin;
-            const rotatedY = btnRelX * sin + btnRelY * cos;
-            
-            // 设置按钮的最终位置
-            btn.style.left = `${rotatedX + centerX}px`;
-            btn.style.top = `${rotatedY + centerY}px`;
-            
-            // 移除之前的transform，因为我们已经手动计算了旋转后的位置
+            // 移除transform，因为我们已经手动计算了位置
             btn.style.transform = 'none';
         });
     }
