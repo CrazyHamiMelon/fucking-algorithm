@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修复功能测试</title>
+    <style>
+        body {
+            font-family: '微软雅黑', Arial, sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-item {
+            margin: 15px 0;
+            padding: 15px;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status.fixed {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔧 修复功能验证</h1>
+        
+        <div class="test-item">
+            <h3>1. 分离上传按钮</h3>
+            <p><strong>问题：</strong>贺卡定制页面里，上传底图和上传图片素材分别用两个按钮</p>
+            <p><strong>状态：</strong><span class="status fixed">已修复</span></p>
+            <p><strong>修复内容：</strong>现在有独立的"上传底图"和"上传图片素材"按钮</p>
+        </div>
+        
+        <div class="test-item">
+            <h3>2. 底图不可选中</h3>
+            <p><strong>问题：</strong>底图上传完成后，底图不可选中</p>
+            <p><strong>状态：</strong><span class="status fixed">已修复</span></p>
+            <p><strong>修复内容：</strong>底图设置 selectable: false, evented: false, locked: true</p>
+        </div>
+        
+        <div class="test-item">
+            <h3>3. 删除平移按钮，改为拖拽</h3>
+            <p><strong>问题：</strong>图片素材的旋转，缩放，删除按钮保留，平移按钮删掉，鼠标点击图片不放拖拽就可以平移</p>
+            <p><strong>状态：</strong><span class="status fixed">已修复</span></p>
+            <p><strong>修复内容：</strong>删除了平移按钮，图片现在可以直接拖拽移动</p>
+        </div>
+        
+        <div class="test-item">
+            <h3>4. 按钮跟随旋转</h3>
+            <p><strong>问题：</strong>图片旋转的时候，绑定的按钮要随着图片的四个角一起旋转</p>
+            <p><strong>状态：</strong><span class="status fixed">已修复</span></p>
+            <p><strong>修复内容：</strong>控制按钮现在会跟随图片旋转角度</p>
+        </div>
+        
+        <div class="test-item">
+            <h3>5. 等比缩放</h3>
+            <p><strong>问题：</strong>图片不支持单边缩放，只能固定长宽比的缩放</p>
+            <p><strong>状态：</strong><span class="status fixed">已修复</span></p>
+            <p><strong>修复内容：</strong>缩放按钮现在只进行等比缩放，scaleX和scaleY同时变化</p>
+        </div>
+        
+        <div class="test-item">
+            <h3>🎯 测试建议</h3>
+            <p>请按以下步骤测试修复后的功能：</p>
+            <ol>
+                <li>打开主页面，点击"开始定制"</li>
+                <li>分别测试"上传底图"和"上传图片素材"按钮</li>
+                <li>验证底图不可选中和编辑</li>
+                <li>拖拽图片素材验证移动功能</li>
+                <li>点击旋转按钮，观察控制按钮是否跟随旋转</li>
+                <li>点击缩放按钮，验证是否为等比缩放</li>
+            </ol>
+        </div>
+        
+        <div class="test-item">
+            <h3>🚀 开始测试</h3>
+            <p>点击下方按钮开始测试修复后的功能：</p>
+            <a href="index.html" class="btn">🎨 开始测试贺卡定制</a>
+        </div>
+    </div>
+</body>
+</html>

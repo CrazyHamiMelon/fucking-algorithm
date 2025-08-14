@@ -37,10 +37,15 @@ class GreetingCardEditor {
             this.startCustomization();
         });
         
-        // 上传图片按钮
+        // 上传底图按钮
+        document.getElementById('uploadBackground').addEventListener('click', () => {
+            document.getElementById('backgroundInput').click();
+        });
+        
+        // 上传图片素材按钮
         document.getElementById('uploadImage').addEventListener('click', () => {
             if (this.uploadedImages.length >= this.maxImages) {
-                alert(`最多只能上传${this.maxImages}张图片`);
+                alert(`最多只能上传${this.maxImages}张图片素材`);
                 return;
             }
             document.getElementById('imageInput').click();
@@ -55,7 +60,7 @@ class GreetingCardEditor {
             this.addNewText();
         });
         
-        // 图片上传处理
+        // 图片素材上传处理
         document.getElementById('imageInput').addEventListener('change', (e) => {
             this.handleImageUpload(e.target.files[0]);
             e.target.value = ''; // 清空input，允许重复选择同一文件
@@ -125,12 +130,6 @@ class GreetingCardEditor {
     startCustomization() {
         document.getElementById('startCustomize').style.display = 'none';
         document.getElementById('uploadControls').style.display = 'block';
-        
-        // 提示用户上传背景图
-        if (!this.backgroundImage) {
-            alert('请先上传一张背景图片作为贺卡底图');
-            document.getElementById('backgroundInput').click();
-        }
     }
     
     handleBackgroundUpload(file) {
@@ -177,6 +176,10 @@ class GreetingCardEditor {
                 img.left = 100 + this.uploadedImages.length * 50;
                 img.top = 100 + this.uploadedImages.length * 50;
                 
+                // 设置图片可以拖拽移动
+                img.selectable = true;
+                img.evented = true;
+                
                 // 添加控制按钮
                 this.addImageControls(img);
                 
@@ -200,20 +203,18 @@ class GreetingCardEditor {
         const rotateBtn = this.createControlButton('↻', 'rotate', () => {
             img.rotate((img.angle || 0) + 15);
             this.canvas.renderAll();
+            // 更新控制按钮位置和旋转
+            this.updateControlPosition(controls, img);
         });
         
-        // 缩放按钮
+        // 缩放按钮（等比缩放）
         const scaleBtn = this.createControlButton('⤢', 'scale', () => {
-            img.scaleX = img.scaleX * 1.1;
-            img.scaleY = img.scaleY * 1.1;
+            const scaleFactor = 1.1;
+            img.scaleX = img.scaleX * scaleFactor;
+            img.scaleY = img.scaleY * scaleFactor;
             this.canvas.renderAll();
-        });
-        
-        // 移动按钮
-        const moveBtn = this.createControlButton('↔', 'move', () => {
-            img.selectable = !img.selectable;
-            img.evented = !img.evented;
-            this.canvas.renderAll();
+            // 更新控制按钮位置
+            this.updateControlPosition(controls, img);
         });
         
         // 删除按钮
@@ -232,7 +233,6 @@ class GreetingCardEditor {
         
         controls.appendChild(rotateBtn);
         controls.appendChild(scaleBtn);
-        controls.appendChild(moveBtn);
         controls.appendChild(deleteBtn);
         
         // 将控制按钮添加到画布容器
@@ -283,6 +283,9 @@ class GreetingCardEditor {
         controls.style.top = `${imgTop}px`;
         controls.style.width = `${imgWidth}px`;
         controls.style.height = `${imgHeight}px`;
+        
+        // 让控制按钮跟随图片旋转
+        controls.style.transform = `rotate(${img.angle || 0}deg)`;
     }
     
     addNewText() {

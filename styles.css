@@ -263,11 +263,7 @@ header h1 {
     right: -15px;
 }
 
-.control-btn.move {
-    background: #17a2b8;
-    bottom: -15px;
-    left: -15px;
-}
+/* 移除移动按钮样式，因为现在使用拖拽移动 */
 
 .control-btn.delete {
     background: #dc3545;
